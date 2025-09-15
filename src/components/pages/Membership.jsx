@@ -2,87 +2,55 @@
 import React from "react";
 
 export default function MembershipPlans() {
-  const plans = [
-    {
-      title: "Celestial Seeker",
-      subtitle: "Basic Membership",
-      features: [
-        "Basic natal chart analysis",
-        "Monthly newsletter with celestial insights",
-        "Member-only discounts on special readings and services",
-      ],
-      price: "$9.99/month",
-      button: "Subscribe Now",
-      popular: false,
-    },
-    {
-      title: "Celestial Explorer",
-      subtitle: "Premium Membership",
-      features: [
-        "All features of the Celestial Seeker plan",
-        "Access to daily horoscopes",
-        "Exclusive early access to monthly astrological forecasts",
-      ],
-      price: "$19.99/month",
-      button: "Subscribe Now",
-      popular: true,
-    },
-    {
-      title: "Celestial Visionary",
-      subtitle: "VIP Membership",
-      features: [
-        "All features of the Celestial Explorer plan",
-        "Exclusive access to webinars and workshops",
-        "Personalized monthly guidance sessions with a professional astrologer",
-      ],
-      price: "$49.99/month",
-      button: "Subscribe Now",
-      popular: false,
-    },
-  ];
-
   return (
-    <section className="bg-white py-16 px-6">
-      <h2 className="text-center text-2xl md:text-3xl font-bold text-gray-800 mb-12">
-        Check Our Membership Plan
-      </h2>
+<section className="px-8 py-12 bg-gray-50">
+  <h2 className="text-3xl font-semibold text-center mb-10">Check Our Membership Plan</h2>
+  
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+    
+    {/* Celestial Seeker */}
+    <div className="rounded-2xl h-[400px] border p-8 shadow-sm flex flex-col items-center text-center">
+      <h3 className="text-3xl font-bold">Celestial Seeker</h3>
+      <p className="text-sm font-bold mt-1 mb-4 text-gray-600">Basic Membership</p>
+      <ul className="list-disc list-inside text-left space-y-2 text-gray-700 mb-6">
+        <li>Basic natal chart analysis</li>
+        <li>Monthly newsletter with celestial insights</li>
+        <li>Member-only discounts on special readings and services</li>
+      </ul>
+      <p className="text-4xl font-bold mb-2">$9.99<span className="text-base font-normal">/month</span></p>
+      <button className="bg-orange-400 text-white px-6 py-2 rounded-md hover:bg-orange-500 transition">Subscribe Now</button>
+    </div>
+    
+    {/* Celestial Explorer */}
+    <div className="rounded-2xl h-[420px] border p-8 shadow-md flex flex-col items-center text-center relative">
+      <span className="absolute top-0 right-0 bg-orange-400 text-white text-xs font-semibold px-6 py-2 rounded-tr-2xl">
+        Popular
+      </span>
+      <h3 className="text-3xl font-bold">Celestial Explorer</h3>
+      <p className="text-sm font-bold mt-1 mb-4 text-gray-600">Premium Membership</p>
+      <ul className="list-disc list-inside text-left space-y-2 text-gray-700 mb-6">
+    <li>All features of the Celestial Seeker plan</li>
+    <li>Access to daily horoscopes</li>
+    <li>Exclusive early access to monthly astrological forecasts</li>
+  </ul>
+      <p className="text-4xl font-bold mb-6">$19.99<span className="text-base font-normal">/month</span></p>
+      <button className="bg-orange-400 text-white px-6 py-2 rounded-md hover:bg-orange-500 transition">Subscribe Now</button>
+    </div>
+    
+    {/* Celestial Visionary */}
+    <div className="rounded-2xl h-[400px] border p-8 shadow-sm flex flex-col items-center text-center">
+      <h3 className="text-3xl font-bold">Celestial Visionary</h3>
+      <p className="text-sm font-bold mt-1 mb-4 text-gray-600">VIP Membership</p>
+      <ul className="list-disc list-inside text-left space-y-2 text-gray-700 mb-6">
+        <li>All features of the Celestial Explorer plan</li>
+        <li>Exclusive access to webinars and workshops</li>
+        <li>Personalized monthly guidance sessions with a professional astrologer</li>
+      </ul>
+      <p className="text-4xl font-bold mb-2">$49.99<span className="text-base font-normal">/month</span></p>
+      <button className="bg-orange-400 text-white px-6 py-2 rounded-md hover:bg-orange-500 transition">Subscribe Now</button>
+    </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {plans.map((plan, i) => (
-          <div
-            key={i}
-            className="relative bg-white border border-gray-400 rounded-lg shadow-md p-8 text-center flex flex-col"
-          >
-            {/* Popular Ribbon */}
-            {plan.popular && (
-              <div className="absolute top-0 right-0 bg-amber-600 text-white text-sm font-semibold px-3 py-1 rounded-bl-lg">
-                Popular
-              </div>
-            )}
-
-            {/* Title */}
-            <h3 className="text-xl font-bold text-gray-800">
-              {plan.title}
-            </h3>
-            <p className="text-gray-700 italic mb-6">{plan.subtitle}</p>
-
-            {/* Features */}
-            <ul className="text-gray-700 text-sm flex-1 space-y-2 mb-6">
-              {plan.features.map((feature, idx) => (
-                <li key={idx}>{feature}</li>
-              ))}
-            </ul>
-
-            {/* Price */}
-            <p className="text-2xl font-bold text-black mb-6">{plan.price}</p>
-
-            {/* Button */}
-            <button className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded shadow-md transition">
-              {plan.button}
-            </button>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+  </div>
+</section>
+  )
 }

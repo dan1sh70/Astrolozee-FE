@@ -1,152 +1,172 @@
 // App.jsx
 import React from "react";
+import Footer from "../layout/Footer";
+import MembershipPlans from "./Membership";
+import Header from "../layout/Header";
 
 export default function App() {
   return (
-    <div className="bg-[#fff6eb] min-h-screen font-sans">
+    <div className=" min-h-screen font-sans">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-4 bg-[#fff6eb] shadow-md">
-        <div className="text-2xl font-bold text-amber-700">AstroLab</div>
-        <ul className="flex gap-8 text-gray-700 font-medium">
-          <li className="hover:text-amber-600 cursor-pointer">Home</li>
-          <li className="hover:text-amber-600 cursor-pointer">Kundli Generation</li>
-          <li className="hover:text-amber-600 cursor-pointer">AI-Based Q&A</li>
-          <li className="hover:text-amber-600 cursor-pointer">Remedies</li>
-        </ul>
-        <button className="px-5 py-2 bg-amber-500 text-white rounded-lg shadow hover:bg-amber-600">
-          Explore
-        </button>
-      </nav>
+      <Header/>
 
       {/* Hero Section */}
-      <section className="text-center py-16 px-6">
+      <section className="bg-gray-50 flex items-center justify-center text-center gap-10 py-16 px-6">
         <img
-          src="./astro-wheel.png"
+          src="/land5.jpeg"
           alt="Astrology Wheel"
-          className="mx-auto w-48 h-48 mb-6"
+          className=" w-60 h-60"
         />
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          Where Mystics Meet Logic
+        <div>
+          <h2 className="text-lg font-semibold text-amber-600 mb-2">
+            What is your sign ? 
+          </h2>
+        <h1 className="text-5xl font-semibold text-gray-800 mb-4">
+          Where Mystics Meet <br /> Logic
         </h1>
         <p className="text-gray-600 max-w-xl mx-auto">
-          Unlock the secrets of the universe with astrology combined with
-          cutting-edge AI. Personalized insights for every seeker.
+          Discover your cosmic path with celestial by your side.
         </p>
+        </div>
       </section>
 
       {/* Services */}
-      <section className="px-8 py-12">
-        <h2 className="text-center text-2xl font-bold text-amber-600 mb-10">
+      <section className="bg-gray-50 px-8 py-12">
+        <h2 className="text-center text-4xl font-semibold text-amber-600 mb-10">
           Our Services
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition">
-            <img src="./hand.png" alt="Kundli" className="mx-auto w-20 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-800 text-center">
+          <div className="p-6 bg-gray-50 border-black border rounded-xl shadow-md hover:shadow-lg transition">
+            <img src="land1.jpeg" alt="Kundli" className="mx-auto w-60 h-60 mb-4" />
+            <h3 className="text-4xl mb-5 font-semibold text-gray-800 text-center">
               Kundli Generation
             </h3>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis rem animi velit. Illum sunt et iure, recusandae corrupti voluptas, in architecto autem consequatur aliquam non odio maiores itaque neque perferendis?</p>
           </div>
-          <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition">
-            <img src="./ai.png" alt="AI" className="mx-auto w-20 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-800 text-center">
+          <div className="p-6 bg-gray-50 border-black border rounded-xl shadow-md hover:shadow-lg transition">
+            <img src="land2.jpeg" alt="AI" className="mx-auto w-60 h-60 mb-4" />
+            <h3 className="text-4xl mb-5 font-semibold text-gray-800 text-center">
               AI-Assisted Q&A
             </h3>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis rem animi velit. Illum sunt et iure, recusandae corrupti voluptas, in architecto autem consequatur aliquam non odio maiores itaque neque perferendis?</p>
           </div>
-          <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition">
+          <div className="p-6 bg-gray-50 border-black border rounded-xl shadow-md hover:shadow-lg transition">
             <img
-              src="./remedies.png"
+              src="land3.jpeg"
               alt="Remedies"
-              className="mx-auto w-20 mb-4"
+              className="mx-auto w-60 h-60 mb-4"
             />
-            <h3 className="text-lg font-semibold text-gray-800 text-center">
+            <h3 className="text-4xl mb-5 font-semibold text-gray-800 text-center">
               Remedies Suggestions
             </h3>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Debitis rem animi velit. Illum sunt et iure, recusandae corrupti voluptas, in architecto autem consequatur aliquam non odio maiores itaque neque perferendis?</p>
           </div>
         </div>
       </section>
 
       {/* Membership Call-to-Action */}
-      <section className="text-center py-12 bg-[#fff0d9]">
-        <h2 className="text-2xl font-bold text-gray-800">
+      <section className="text-center py-12 bg-gray-50 border border-amber-400">
+        <h2 className="text-4xl font-semibold text-gray-800">
           Let’s Become Members
         </h2>
-        <button className="mt-6 px-8 py-3 bg-amber-500 text-white font-semibold rounded-full shadow hover:bg-amber-600">
-          Sign Up
+        <button className="mt-6 px-16 py-5 bg-amber-500 text-white font-semibold rounded-xl shadow hover:bg-amber-600">
+          Get Started
         </button>
       </section>
 
       {/* Membership Plans */}
-      <section className="px-8 py-12">
-        <h2 className="text-center text-2xl font-bold text-amber-600 mb-10">
-          Check Our Membership Plan
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {[
-            {
-              title: "Celestial Seeker",
-              price: "$9.99/month",
-              desc: "Basic access to astrology insights and personalized reports.",
-            },
-            {
-              title: "Celestial Explorer",
-              price: "$19.99/month",
-              desc: "Advanced tools with AI-assisted Q&A and remedies suggestions.",
-            },
-            {
-              title: "Celestial Visionary",
-              price: "$49.99/month",
-              desc: "Full access including personal guidance and deep astrology reports.",
-            },
-          ].map((plan, i) => (
-            <div
-              key={i}
-              className="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition text-center"
-            >
-              <h3 className="text-lg font-bold text-gray-800 mb-2">
-                {plan.title}
-              </h3>
-              <p className="text-gray-600 mb-4">{plan.desc}</p>
-              <p className="text-2xl font-bold text-amber-600 mb-6">
-                {plan.price}
-              </p>
-              <button className="px-6 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600">
-                Choose Plan
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
+<MembershipPlans/> 
+
 
       {/* Astrology Signs */}
-      <section className="px-8 py-12 bg-[#fff0d9]">
-        <h2 className="text-center text-2xl font-bold text-gray-800 mb-8">
-          Understanding Science of Astrology
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {[
-            "Aries",
-            "Taurus",
-            "Gemini",
-            "Cancer",
-            "Leo",
-            "Virgo",
-          ].map((sign, i) => (
-            <div key={i} className="text-center">
-              <img
-                src={`./${sign.toLowerCase()}.png`}
-                alt={sign}
-                className="mx-auto w-12 h-12 mb-2"
-              />
-              <h3 className="font-semibold text-gray-700">{sign}</h3>
-            </div>
-          ))}
-        </div>
-      </section>
+<section className="px-8 py-12 bg-gray-50">
+  <div className="max-w-6xl mx-auto">
+    {/* Header */}
+    <div className="flex justify-between items-start mb-12">
+      <h2 className="text-3xl font-semibold max-w-md">
+        Understanding Science of Astrology
+      </h2>
+      <p className="text-sm text-gray-700 max-w-sm">
+        Lorem ipsum dolor sit amet consectetur. Pellentesque nascetur sed
+        tellus ut vehicula eu consectetur elit sit. Nulla erat nunc nisi dui sed
+        cras semper vitae.
+      </p>
+    </div>
 
-      {/* Footer */}
-      <footer className="py-6 text-center bg-[#fff6eb] text-gray-600">
-        © {new Date().getFullYear()} AstroLab. All rights reserved.
-      </footer>
+    {/* Zodiac Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      
+      {/* Left Column */}
+      <div className="space-y-10 relative mt-32">
+        {/* Aries */}
+        <div className="flex items-center space-x-6">
+          <img src="land13.jpeg" alt="" className="h-40 w-40" /> {/* Image placeholder */}
+          <div>
+            <h3 className="text-lg font-bold">ARIES</h3>
+            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+          </div>
+        </div>
+
+        {/* Taurus */}
+        <div className="flex items-center space-x-6">
+          <img src="land11.jpeg" alt="" className="h-40 w-40" />
+          <div>
+            <h3 className="text-lg font-bold">TAURUS</h3>
+            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+          </div>
+        </div>
+
+        {/* Gemini */}
+        <div className="flex items-center space-x-6">
+          <img src="land9.jpeg" alt="" className="h-40 w-40" />
+          <div>
+            <h3 className="text-lg font-bold">GEMINI</h3>
+            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column */}
+      <div className="space-y-10">
+        {/* Cancer */}
+        <div className="flex items-center space-x-6">
+          <img src="land7.jpeg" alt="" className="h-40 w-40" />
+          <div>
+            <h3 className="text-lg font-bold">CANCER</h3>
+            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+          </div>
+        </div>
+
+        {/* Leo */}
+        <div className="flex items-center space-x-6">
+          <img src="land4.jpeg" alt="" className="h-40 w-40" />
+          <div>
+            <h3 className="text-lg font-bold">LEO</h3>
+            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+          </div>
+        </div>
+
+        {/* Virgo */}
+        <div className="flex items-center space-x-6">
+          <img src="land8.jpeg" alt="" className="h-40 w-40" />
+          <div>
+            <h3 className="text-lg font-bold">VIRGO</h3>
+            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Button */}
+    <div className="flex justify-center mt-12">
+      <button className="bg-orange-400 text-white px-6 py-2 rounded-md hover:bg-orange-500 transition">
+        See More
+      </button>
+    </div>
+  </div>
+</section>
+
+<Footer/>
     </div>
   );
 }
