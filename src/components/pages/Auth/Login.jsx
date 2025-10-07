@@ -1,14 +1,97 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    setError(''); // Clear error on input change
+  };
+
+  // Regular email/password login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Important for cookies
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Successfully logged in
+        console.log('Login successful:', data);
+        // Redirect to dashboard or home
+        window.location.href = '/';
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Google login success handler
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Important for cookies
+        body: JSON.stringify({ 
+          credential: credentialResponse.credential 
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Google login successful:', data);
+        
+        // Check if profile is complete
+        if (!data.isProfileComplete) {
+          // Redirect to profile completion page
+          window.location.href = '/complete-profile';
+        } else {
+          // Redirect to dashboard
+          window.location.href = '/';
+        }
+      } else {
+        setError(data.message || 'Google login failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Google login error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Google login error handler
+  const handleGoogleError = () => {
+    setError('Google login failed. Please try again.');
   };
 
   const InputField = ({ icon: Icon, type = "text", placeholder, value, onChange }) => (
@@ -54,7 +137,14 @@ export default function LoginPage() {
               <p className="text-gray-600">Enter your credentials to access your account</p>
             </div>
 
-            <div className="space-y-4">
+            <form onSubmit={handleLogin} className="space-y-4">
+              {/* Error Message */}
+              {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                  {error}
+                </div>
+              )}
+
               {/* Email */}
               <InputField
                 icon={Mail}
@@ -74,41 +164,49 @@ export default function LoginPage() {
               />
 
               {/* Login Button */}
-              <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-full text-lg transition-colors duration-200 shadow-lg mt-6">
-                Login
+              <button 
+                type="submit"
+                disabled={loading}
+                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-full text-lg transition-colors duration-200 shadow-lg mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Loading...' : 'Login'}
               </button>
 
-               <div className="text-center mt-4">
+              <div className="text-center mt-4">
                 <p className="text-gray-600">
                   New here?
-                  <button className="text-amber-600 hover:text-amber-700 font-semibold ml-1 underline">
+                  <button 
+                    type="button"
+                    onClick={() => window.location.href = '/signup'}
+                    className="text-amber-600 hover:text-amber-700 font-semibold ml-1 underline"
+                  >
                     Sign Up
                   </button>
                 </p>
               </div>
+            </form>
 
-              {/* Divider with OR */}
-              <div className="flex items-center my-6">
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="mx-3 text-gray-500">or</span>
-                <div className="flex-grow border-t border-gray-300"></div>
-              </div>
+            {/* Divider with OR */}
+            <div className="flex items-center my-6">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-3 text-gray-500">or</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
 
-              {/* Google Login */}
-              <div className="flex items-center justify-center">
-  <span className="text-gray-600 mr-3">Login with :</span>
-
-  <button className="flex items-center space-x-2 px-6 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow">
-    {/* Google G Icon */}
-    <svg className="w-5 h-5" viewBox="0 0 533.5 544.3">
-      <path fill="#4285F4" d="M533.5 278.4c0-18.5-1.5-37-4.6-54.9H272v103.9h146.9c-6.4 34.8-25.5 64.2-54.3 83.9l87.9 68.2c51.4-47.4 81-117.3 81-201.1z"/>
-      <path fill="#34A853" d="M272 544.3c73.6 0 135.4-24.4 180.6-66.2l-87.9-68.2c-24.4 16.6-55.6 26.1-92.7 26.1-71 0-131.2-47.9-152.8-112.4l-90.3 69.4C72.9 475.8 166.5 544.3 272 544.3z"/>
-      <path fill="#FBBC05" d="M119.2 323.6c-11.3-33.8-11.3-70.6 0-104.4L28.9 149.8c-37.5 74.8-37.5 164 0 238.8l90.3-65z"/>
-      <path fill="#EA4335" d="M272 107.7c39.9-.6 78.4 14.4 108.1 41.7l80.2-80.2C407.3 24.1 344.7-.3 272 0 166.5 0 72.9 68.5 28.9 171.5l90.3 69.4C140.8 155.6 201 107.7 272 107.7z"/>
-    </svg>
-  </button>
-</div>
-
+            {/* Google Login */}
+            <div className="flex flex-col items-center">
+              <span className="text-gray-600 mb-3">Login with:</span>
+              
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                useOneTap={false}
+                shape="pill"
+                size="large"
+                theme="outline"
+                text="continue_with"
+                width="280"
+              />
             </div>
           </div>
         </div>

@@ -11,20 +11,20 @@ export default function App() {
       <Header/>
 
       {/* Hero Section */}
-      <section className="bg-gray-50 flex items-center justify-center text-center gap-10 py-16 px-6">
+      <section className="bg-gray-50 flex items-center justify-center text-center gap-10 py-16 sm:px-6 px-2">
         <img
           src="/land5.jpeg"
           alt="Astrology Wheel"
-          className=" w-60 h-60"
+          className=" sm:w-60 sm:h-60 w-28 h-28"
         />
         <div>
           <h2 className="text-lg font-semibold text-amber-600 mb-2">
             What is your sign ? 
           </h2>
-        <h1 className="text-5xl font-semibold text-gray-800 mb-4">
+        <h1 className="sm:text-5xl text-2xl font-semibold text-gray-800 mb-4">
           Where Mystics Meet <br /> Logic
         </h1>
-        <p className="text-gray-600 max-w-xl mx-auto">
+        <p className="text-gray-600 max-w-xl mx-auto text-sm">
           Discover your cosmic path with celestial by your side.
         </p>
         </div>

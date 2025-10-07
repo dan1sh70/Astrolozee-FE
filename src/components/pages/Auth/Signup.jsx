@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { User, Calendar, MapPin, Heart, Target, Star, ChevronDown } from 'lucide-react';
+import { User, Calendar, MapPin, Heart, Target, Star, ChevronDown, Mail, Lock } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
+    password: '',
     gender: '',
     dateOfBirth: '',
     timeOfBirth: '',
@@ -14,9 +17,102 @@ export default function SignUpPage() {
     focusArea: '',
     purposeOfVisit: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    setError('');
+  };
+
+  const handleSignUp = async () => {
+    const { name, email, password, gender, dateOfBirth, timeOfBirth, currentLocation, 
+            placeOfBirth, maritalStatus, religion, focusArea, purposeOfVisit } = formData;
+
+    if (!name || !email || !password || !gender || !dateOfBirth || !timeOfBirth || 
+        !currentLocation || !placeOfBirth || !maritalStatus || !religion || 
+        !focusArea || !purposeOfVisit) {
+      setError('Please fill all required fields');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          gender: gender.toLowerCase(),
+          dateOfBirth,
+          timeOfBirth,
+          currentLocation,
+          placeOfBirth,
+          maritalStatus: maritalStatus.toLowerCase().replace(/\s+/g, ' '),
+          religion: religion.toLowerCase(),
+          focusArea: [focusArea.toLowerCase()],
+          purposeOfVisit: purposeOfVisit.toLowerCase()
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Signup successful:', data);
+        window.location.href = '/';
+      } else {
+        setError(data.message || 'Signup failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Signup error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          credential: credentialResponse.credential 
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Google signup successful:', data);
+        
+        if (!data.isProfileComplete) {
+          window.location.href = '/complete-profile';
+        } else {
+          window.location.href = '/';
+        }
+      } else {
+        setError(data.message || 'Google signup failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Google signup error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError('Google signup failed. Please try again.');
   };
 
   const SelectField = ({ icon: Icon, placeholder, value, onChange, options }) => (
@@ -58,13 +154,11 @@ export default function SignUpPage() {
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat'
     }}>
-      {/* Optional overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-50/30 via-orange-50/20 to-yellow-100/30"></div>
 
       <div className="relative z-10 min-h-screen flex items-center p-6">
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
           
-          {/* Left Section */}
           <div className="flex-1 max-w-2xl">
             <h1 className="text-6xl lg:text-7xl font-bold text-gray-800 leading-tight">
               SIGN UP TO YOUR
@@ -74,7 +168,6 @@ export default function SignUpPage() {
             </h2>
           </div>
 
-          {/* Right Section - Form */}
           <div className="w-full max-w-lg ml-8 bg-amber-100/60 backdrop-blur-md rounded-3xl p-4 shadow-xl border border-amber-200/50">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-800 mb-2">Sign Up</h3>
@@ -82,14 +175,36 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-4">
-              {/* Name and Gender */}
+              {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
+
+              <InputField
+                icon={User}
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={(value) => handleInputChange('name', value)}
+              />
+
+              <InputField
+                icon={Mail}
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(value) => handleInputChange('email', value)}
+              />
+
+              <InputField
+                icon={Lock}
+                type="password"
+                placeholder="Password (min 8 characters)"
+                value={formData.password}
+                onChange={(value) => handleInputChange('password', value)}
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  icon={User}
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={(value) => handleInputChange('name', value)}
-                />
                 <SelectField
                   icon={User}
                   placeholder="Gender"
@@ -97,9 +212,15 @@ export default function SignUpPage() {
                   onChange={(value) => handleInputChange('gender', value)}
                   options={['Male', 'Female', 'Other','None']}
                 />
+                <SelectField
+                  icon={Heart}
+                  placeholder="Marital status"
+                  value={formData.maritalStatus}
+                  onChange={(value) => handleInputChange('maritalStatus', value)}
+                  options={['Single', 'Married', 'Divorced','Separated', 'Widowed']}
+                />
               </div>
 
-              {/* Date and Time of Birth */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InputField
                   icon={Calendar}
@@ -117,7 +238,6 @@ export default function SignUpPage() {
                 />
               </div>
 
-              {/* Location Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InputField
                   icon={MapPin}
@@ -133,83 +253,75 @@ export default function SignUpPage() {
                 />
               </div>
 
-              {/* Status Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <SelectField
-                  icon={Heart}
-                  placeholder="Marital status"
-                  value={formData.maritalStatus}
-                  onChange={(value) => handleInputChange('maritalStatus', value)}
-                  options={['Single', 'In a relationship', 'Engaged', 'Married', 'Divorced','Separated', 'Widowed']}
-                />
-                <SelectField
-                  icon={Star}
-                  placeholder="Religions"
-                  value={formData.religion}
-                  onChange={(value) => handleInputChange('religion', value)}
-                  options={['Hindu', 'Christian', 'Sikh', 'Jain', 'Buddhist', 'Non-Religious']}
-                />
-              </div>
+              <SelectField
+                icon={Star}
+                placeholder="Religion"
+                value={formData.religion}
+                onChange={(value) => handleInputChange('religion', value)}
+                options={['Hindu', 'Muslim', 'Christian', 'Sikh', 'Jain', 'Buddhist', 'None']}
+              />
 
-              {/* Focus and Purpose */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <SelectField
                   icon={Target}
                   placeholder="Focus Area"
                   value={formData.focusArea}
                   onChange={(value) => handleInputChange('focusArea', value)}
-                  options={['Relationships','Career/Job','Business/Finance', 'Health & Wellness','Fmily & Children', 'Spiritual Growth', 'Education','Foreign Settlement or Travel' ,'Life Purpose or Past life','Marital Status']}
+                  options={['Relationship','Career','Business', 'Health & Fitness','Family & Children', 'Spiritual Growth', 'Foreign Settlement' ,'Life Purpose','Marital Status']}
                 />
                 <SelectField
                   icon={User}
                   placeholder="Purpose of visit"
                   value={formData.purposeOfVisit}
                   onChange={(value) => handleInputChange('purposeOfVisit', value)}
-                  options={['Love', 'Marriage', 'Career', 'Health', 'Wealth', 'Peace of mind','Family', 'Other']}
+                  options={['Love', 'Marriage', 'Career', 'Health', 'Wealth', 'Peace of Mind','Family', 'Other']}
                 />
               </div>
 
-              {/* Sign Up Button */}
-              <button className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-full text-lg transition-colors duration-200 shadow-lg mt-8">
-                Sign up
+              <button 
+                onClick={handleSignUp}
+                disabled={loading}
+                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-full text-lg transition-colors duration-200 shadow-lg mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Creating Account...' : 'Sign up'}
               </button>
 
-<div className="text-center mt-2">
-  <p className="text-gray-600">
-    Already Registered? 
-    <button className="text-amber-600 hover:text-amber-700 font-semibold ml-1 underline">
-      Login
-    </button>
-  </p>
-</div>
+              <div className="text-center mt-2">
+                <p className="text-gray-600">
+                  Already Registered? 
+                  <button 
+                    onClick={() => window.location.href = '/login'}
+                    className="text-amber-600 hover:text-amber-700 font-semibold ml-1 underline"
+                  >
+                    Login
+                  </button>
+                </p>
+              </div>
 
-{/* Divider with OR */}
-<div className="flex items-center my-4">
-  <div className="flex-grow border-t border-gray-300"></div>
-  <span className="mx-3 text-gray-500">or</span>
-  <div className="flex-grow border-t border-gray-300"></div>
-</div>
+              <div className="flex items-center my-4">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="mx-3 text-gray-500">or</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
 
-{/* Google Login */}
-<div className="flex items-center justify-center mt-2">
-  <span className="text-gray-600 mr-3">Login with :</span>
-
-  <button className="flex items-center space-x-2 px-6 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow">
-    {/* Google G Icon */}
-    <svg className="w-5 h-5" viewBox="0 0 533.5 544.3">
-      <path fill="#4285F4" d="M533.5 278.4c0-18.5-1.5-37-4.6-54.9H272v103.9h146.9c-6.4 34.8-25.5 64.2-54.3 83.9l87.9 68.2c51.4-47.4 81-117.3 81-201.1z"/>
-      <path fill="#34A853" d="M272 544.3c73.6 0 135.4-24.4 180.6-66.2l-87.9-68.2c-24.4 16.6-55.6 26.1-92.7 26.1-71 0-131.2-47.9-152.8-112.4l-90.3 69.4C72.9 475.8 166.5 544.3 272 544.3z"/>
-      <path fill="#FBBC05" d="M119.2 323.6c-11.3-33.8-11.3-70.6 0-104.4L28.9 149.8c-37.5 74.8-37.5 164 0 238.8l90.3-65z"/>
-      <path fill="#EA4335" d="M272 107.7c39.9-.6 78.4 14.4 108.1 41.7l80.2-80.2C407.3 24.1 344.7-.3 272 0 166.5 0 72.9 68.5 28.9 171.5l90.3 69.4C140.8 155.6 201 107.7 272 107.7z"/>
-    </svg>
-  </button>
-</div>
-
-
+              <div className="flex flex-col items-center mt-2">
+                <span className="text-gray-600 mb-3">Sign up with:</span>
+                
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  useOneTap={false}
+                  shape="pill"
+                  size="large"
+                  theme="outline"
+                  text="signup_with"
+                  width="280"
+                />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+  )
 }

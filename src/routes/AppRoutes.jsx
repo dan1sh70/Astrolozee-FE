@@ -6,6 +6,7 @@ import KundliGenerator from "./../components/pages/KundliGenerator";
 import QnA from "../components/pages/QnA";
 import Remedies from "./../components/pages/Remedies";
 import Membership from "./../components/pages/Membership";
+import CompleteProfilePage from "../components/pages/Auth/CompleteProfilePage";
 
 
 
@@ -19,6 +20,8 @@ export default function AppRoutes() {
         <Route path="/kundli" element={<KundliGenerator />} />
         <Route path="/qna" element={<QnA />} />
         <Route path="/remedies" element={<Remedies />} />
+        <Route path="/complete-profile" element={<CompleteProfilePage/>} />
+        
       </Routes>
     </BrowserRouter>
   );
