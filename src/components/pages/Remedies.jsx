@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle, CheckCircle2, MessageSquare } from "lucide-react";
+import { AlertCircle, CheckCircle2, MessageSquare,Lock } from "lucide-react";
 import Header from "./../layout/Header";
 import Footer from "./../layout/Footer";
 
@@ -8,19 +8,38 @@ export default function Remedies() {
     <>
       <Header />
 
-      <div className="min-h-screen bg-gray-50 text-gray-900 antialiased flex flex-col">
-        {/* Banner text */}
+      <div className="relative min-h-screen flex items-center justify-center bg-gray-100">
+        {/* Blurred Background Overlay */}
+        <div className="absolute inset-0 backdrop-blur-md bg-white/15 z-10"></div>
+
+        {/* Payment Access Message */}
+        <div className="relative z-20 bg-white/90 rounded-2xl shadow-2xl p-8 max-w-sm text-center">
+          <Lock className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Premium Access Required
+          </h2>
+          <p className="text-sm text-gray-700 mb-5">
+            You need to complete your payment to view this personalised
+            Astro-Remedy report.
+          </p>
+          <button className="bg-amber-500 hover:bg-amber-600 transition text-white font-medium px-4 py-2 rounded-lg">
+            Proceed to Payment
+          </button>
+        </div>
+      </div>
+
+      {/* <div className="min-h-screen bg-gray-50 text-gray-900 antialiased flex flex-col">
+  
         <div className="max-w-6xl mx-auto px-4 pt-6 w-full">
           <div className="text-amber-500 font-medium text-sm mb-4 text-center sm:text-left">
             We have remedies for everything
           </div>
         </div>
 
-        {/* Main card */}
         <main className="flex-grow w-full">
           <div className="max-w-6xl mx-auto px-4 pb-12">
             <article className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 md:p-8">
-              {/* Kundli info pill */}
+            
               <div className="mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-[#F5D9A9] border border-[#EECF9A] rounded-lg px-4 py-3 text-sm text-gray-800 shadow-sm gap-3">
                   <div>
@@ -42,7 +61,6 @@ export default function Remedies() {
                 </div>
               </div>
 
-              {/* Heading + meta */}
               <header className="mb-4">
                 <h1 className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-1">
                   <AlertCircle className="w-5 h-5 text-amber-600 shrink-0" />
@@ -62,7 +80,6 @@ export default function Remedies() {
                 currently influencing your mental, emotional, and career energies.
               </p>
 
-              {/* Detected Issues */}
               <section className="mb-6">
                 <h2 className="flex items-center gap-2 text-black font-semibold mb-3 text-sm sm:text-base">
                   <svg
@@ -89,7 +106,6 @@ export default function Remedies() {
                 </ol>
               </section>
 
-              {/* Remedies */}
               <section className="mb-6">
                 <h2 className="flex items-center gap-2 text-black font-semibold mb-3 text-sm sm:text-base">
                   <CheckCircle2 className="w-5 h-5 shrink-0" />
@@ -97,7 +113,7 @@ export default function Remedies() {
                 </h2>
 
                 <div className="space-y-6 text-xs sm:text-sm text-gray-800 leading-relaxed">
-                  {/* 1 */}
+              
                   <div>
                     <h3 className="font-semibold mb-2">1. 🧘 Mind &amp; Emotional Balance</h3>
                     <ul className="list-disc ml-5 sm:ml-6 space-y-1">
@@ -107,7 +123,6 @@ export default function Remedies() {
                     </ul>
                   </div>
 
-                  {/* 2 */}
                   <div>
                     <h3 className="font-semibold mb-2">2. 💼 Career &amp; Financial Unlocking</h3>
                     <ul className="list-disc ml-5 sm:ml-6 space-y-1">
@@ -117,7 +132,6 @@ export default function Remedies() {
                     </ul>
                   </div>
 
-                  {/* 3 */}
                   <div>
                     <h3 className="font-semibold mb-2">3. ❤️ Relationship Harmony</h3>
                     <ul className="list-disc ml-5 sm:ml-6 space-y-1">
@@ -137,7 +151,6 @@ export default function Remedies() {
                 Would you like a version like this for love life, health, marriage timing, or spiritual growth?
               </p>
 
-              {/* Ask Anything input */}
               <div className="mt-2">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-white border border-[#E9D3B6] rounded-lg px-3 py-2 sm:px-4 sm:py-3">
                   <div className="flex items-center gap-2 flex-1">
@@ -156,7 +169,7 @@ export default function Remedies() {
             </article>
           </div>
         </main>
-      </div>
+      </div> */}
 
       <Footer />
     </>

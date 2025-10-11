@@ -5,24 +5,49 @@ import Signup from "./../components/pages/Auth/Signup";
 import KundliGenerator from "./../components/pages/KundliGenerator";
 import QnA from "../components/pages/QnA";
 import Remedies from "./../components/pages/Remedies";
-import Membership from "./../components/pages/Membership";
 import CompleteProfilePage from "../components/pages/Auth/CompleteProfilePage";
+import ProtectedRoute from "../components/pages/Auth/ProtectedRoute";
+import AuthInitializer from "../components/pages/Auth/AuthInitializer";
 
 
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
+     <AuthInitializer>
+
       <Routes>
-        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/kundli" element={<KundliGenerator />} />
-        <Route path="/qna" element={<QnA />} />
-        <Route path="/remedies" element={<Remedies />} />
-        <Route path="/complete-profile" element={<CompleteProfilePage/>} />
-        
+
+        <Route path="/" element={
+          <ProtectedRoute>
+          <LandingPage />
+          </ProtectedRoute>
+          } />
+        <Route path="/kundli" element={
+           <ProtectedRoute>
+          <KundliGenerator />
+           </ProtectedRoute>
+          } />
+        <Route path="/qna" element={
+          <ProtectedRoute>
+          <QnA />
+          </ProtectedRoute>
+          } />
+        <Route path="/remedies" element={
+          <ProtectedRoute>
+          <Remedies />
+          </ProtectedRoute>
+          } />
+        <Route path="/complete-profile" element={
+          <ProtectedRoute>
+          <CompleteProfilePage/>
+          </ProtectedRoute>
+          } />
+
       </Routes>
+     </AuthInitializer>
     </BrowserRouter>
   );
 }

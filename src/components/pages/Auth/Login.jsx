@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import useAuthStore from '../../../stores/useAuthStore';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ export default function LoginPage() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -37,6 +39,7 @@ export default function LoginPage() {
       if (response.ok) {
         // Successfully logged in
         console.log('Login successful:', data);
+        setUser(data.user); 
         // Redirect to dashboard or home
         window.location.href = '/';
       } else {
@@ -73,9 +76,11 @@ export default function LoginPage() {
         // Check if profile is complete
         if (!data.isProfileComplete) {
           // Redirect to profile completion page
+          setUser(data.user); 
           window.location.href = '/complete-profile';
         } else {
           // Redirect to dashboard
+          setUser(data.user); 
           window.location.href = '/';
         }
       } else {

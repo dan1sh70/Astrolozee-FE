@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Calendar, MapPin, Heart, Target, Star, ChevronDown, Mail, Lock } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
+import useAuthStore from '../../../stores/useAuthStore';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -19,6 +20,8 @@ export default function SignUpPage() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
+
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -64,6 +67,7 @@ export default function SignUpPage() {
 
       if (response.ok) {
         console.log('Signup successful:', data);
+        setUser(data.user); 
         window.location.href = '/';
       } else {
         setError(data.message || 'Signup failed');
@@ -96,8 +100,10 @@ export default function SignUpPage() {
         console.log('Google signup successful:', data);
         
         if (!data.isProfileComplete) {
+          setUser(data.user); 
           window.location.href = '/complete-profile';
         } else {
+          setUser(data.user); 
           window.location.href = '/';
         }
       } else {
