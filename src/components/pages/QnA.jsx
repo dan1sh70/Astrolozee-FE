@@ -134,23 +134,24 @@ const QNA = () => {
               ))}
             </div>
 
-            <div className="w-full max-w-lg sm:max-w-xl relative bg-amber-100 rounded-lg px-4 py-4 shadow-md">
+            <div className="w-full max-w-2xl flex items-center justify-between bg-amber-100 rounded-lg px-4 py-3 shadow-md mt-6">
               <textarea
-                rows="4"
-                placeholder="Ask Anything..."
-                className="w-full bg-transparent outline-none text-gray-700 placeholder-gray-500 resize-none pr-12 text-sm sm:text-base"
+                rows="2"
+                placeholder="Ask a new question..."
+                value={field}
+                onChange={(e) => setField(e.target.value)}
+                className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500 resize-none text-sm sm:text-base mr-3"
               />
-              <div className="absolute bottom-3 left-4 flex items-center gap-3 text-gray-600">
-                <Mic className="w-5 h-5 cursor-pointer hover:text-amber-600" />
+
+              <div className="flex items-center gap-3 text-gray-600">
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 text-amber-600 animate-spin" />
                 ) : (
                   <Send
                     onClick={handleSubmit}
-                    className="w-5 h-5 cursor-pointer hover:text-amber-600"
+                    className="w-5 h-5 cursor-pointer hover:text-amber-600 transition"
                   />
                 )}
-                <Settings className="w-5 h-5 cursor-pointer hover:text-amber-600" />
               </div>
             </div>
           </>

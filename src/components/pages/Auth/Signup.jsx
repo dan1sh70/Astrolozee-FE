@@ -22,7 +22,6 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const setUser = useAuthStore((state) => state.setUser);
 
-
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setError('');
@@ -98,7 +97,6 @@ export default function SignUpPage() {
 
       if (response.ok) {
         console.log('Google signup successful:', data);
-        
         if (!data.isProfileComplete) {
           setUser(data.user); 
           window.location.href = '/complete-profile';
@@ -128,7 +126,7 @@ export default function SignUpPage() {
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 bg-transparent outline-none text-gray-700 appearance-none"
+          className="flex-1 bg-transparent outline-none text-gray-700 appearance-none text-sm sm:text-base"
         >
           <option value="">{placeholder}</option>
           {options.map(option => (
@@ -148,36 +146,41 @@ export default function SignUpPage() {
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500"
+        className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500 text-sm sm:text-base"
       />
     </div>
   );
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{
-      backgroundImage: 'url("./bgimg1.png")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }}>
+    <div 
+      className="min-h-screen relative overflow-hidden flex flex-col justify-center" 
+      style={{
+        backgroundImage: 'url("./bgimg1.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <div className="absolute inset-0 bg-gradient-to-br from-amber-50/30 via-orange-50/20 to-yellow-100/30"></div>
 
-      <div className="relative z-10 min-h-screen flex items-center p-6">
-        <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
+      <div className="relative z-10 min-h-screen flex flex-col lg:flex-row items-center p-4 sm:p-6 lg:p-10">
+        <div className="w-full flex flex-col lg:flex-row items-center justify-between max-w-7xl mx-auto gap-8 lg:gap-0">
           
-          <div className="flex-1 max-w-2xl">
-            <h1 className="text-6xl lg:text-7xl font-bold text-gray-800 leading-tight">
+          {/* Left side heading */}
+          <div className="flex-1 text-center lg:text-left max-w-2xl px-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
               SIGN UP TO YOUR
             </h1>
-            <h2 className="text-6xl lg:text-7xl font-bold text-amber-500 leading-tight mt-2">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-amber-500 leading-tight mt-2">
               ADVENTURE!
             </h2>
           </div>
 
-          <div className="w-full max-w-lg ml-8 bg-amber-100/60 backdrop-blur-md rounded-3xl p-4 shadow-xl border border-amber-200/50">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">Sign Up</h3>
-              <p className="text-gray-600">Create an account to enjoy all our services</p>
+          {/* Right side form */}
+          <div className="w-full max-w-lg bg-amber-100/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-amber-200/50">
+            <div className="text-center mb-6 sm:mb-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Sign Up</h3>
+              <p className="text-gray-600 text-sm sm:text-base">Create an account to enjoy all our services</p>
             </div>
 
             <div className="space-y-4">
@@ -187,114 +190,43 @@ export default function SignUpPage() {
                 </div>
               )}
 
-              <InputField
-                icon={User}
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={(value) => handleInputChange('name', value)}
-              />
+              <InputField icon={User} placeholder="Full Name" value={formData.name} onChange={(value) => handleInputChange('name', value)} />
+              <InputField icon={Mail} type="email" placeholder="Email" value={formData.email} onChange={(value) => handleInputChange('email', value)} />
+              <InputField icon={Lock} type="password" placeholder="Password (min 8 characters)" value={formData.password} onChange={(value) => handleInputChange('password', value)} />
 
-              <InputField
-                icon={Mail}
-                type="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(value) => handleInputChange('email', value)}
-              />
-
-              <InputField
-                icon={Lock}
-                type="password"
-                placeholder="Password (min 8 characters)"
-                value={formData.password}
-                onChange={(value) => handleInputChange('password', value)}
-              />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <SelectField
-                  icon={User}
-                  placeholder="Gender"
-                  value={formData.gender}
-                  onChange={(value) => handleInputChange('gender', value)}
-                  options={['Male', 'Female', 'Other','None']}
-                />
-                <SelectField
-                  icon={Heart}
-                  placeholder="Marital status"
-                  value={formData.maritalStatus}
-                  onChange={(value) => handleInputChange('maritalStatus', value)}
-                  options={['Single', 'Married', 'Divorced','Separated', 'Widowed']}
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <SelectField icon={User} placeholder="Gender" value={formData.gender} onChange={(value) => handleInputChange('gender', value)} options={['Male', 'Female', 'Other', 'None']} />
+                <SelectField icon={Heart} placeholder="Marital status" value={formData.maritalStatus} onChange={(value) => handleInputChange('maritalStatus', value)} options={['Single', 'Married', 'Divorced', 'Separated', 'Widowed']} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  icon={Calendar}
-                  type="date"
-                  placeholder="Date of Birth"
-                  value={formData.dateOfBirth}
-                  onChange={(value) => handleInputChange('dateOfBirth', value)}
-                />
-                <InputField
-                  icon={Calendar}
-                  type="time"
-                  placeholder="Time of Birth"
-                  value={formData.timeOfBirth}
-                  onChange={(value) => handleInputChange('timeOfBirth', value)}
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <InputField icon={Calendar} type="date" placeholder="Date of Birth" value={formData.dateOfBirth} onChange={(value) => handleInputChange('dateOfBirth', value)} />
+                <InputField icon={Calendar} type="time" placeholder="Time of Birth" value={formData.timeOfBirth} onChange={(value) => handleInputChange('timeOfBirth', value)} />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  icon={MapPin}
-                  placeholder="Current Location"
-                  value={formData.currentLocation}
-                  onChange={(value) => handleInputChange('currentLocation', value)}
-                />
-                <InputField
-                  icon={MapPin}
-                  placeholder="Place of Birth"
-                  value={formData.placeOfBirth}
-                  onChange={(value) => handleInputChange('placeOfBirth', value)}
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <InputField icon={MapPin} placeholder="Current Location" value={formData.currentLocation} onChange={(value) => handleInputChange('currentLocation', value)} />
+                <InputField icon={MapPin} placeholder="Place of Birth" value={formData.placeOfBirth} onChange={(value) => handleInputChange('placeOfBirth', value)} />
               </div>
 
-              <SelectField
-                icon={Star}
-                placeholder="Religion"
-                value={formData.religion}
-                onChange={(value) => handleInputChange('religion', value)}
-                options={['Hindu', 'Muslim', 'Christian', 'Sikh', 'Jain', 'Buddhist', 'None']}
-              />
+              <SelectField icon={Star} placeholder="Religion" value={formData.religion} onChange={(value) => handleInputChange('religion', value)} options={['Hindu', 'Muslim', 'Christian', 'Sikh', 'Jain', 'Buddhist', 'None']} />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <SelectField
-                  icon={Target}
-                  placeholder="Focus Area"
-                  value={formData.focusArea}
-                  onChange={(value) => handleInputChange('focusArea', value)}
-                  options={['Relationship','Career','Business', 'Health & Fitness','Family & Children', 'Spiritual Growth', 'Foreign Settlement' ,'Life Purpose','Marital Status']}
-                />
-                <SelectField
-                  icon={User}
-                  placeholder="Purpose of visit"
-                  value={formData.purposeOfVisit}
-                  onChange={(value) => handleInputChange('purposeOfVisit', value)}
-                  options={['Love', 'Marriage', 'Career', 'Health', 'Wealth', 'Peace of Mind','Family', 'Other']}
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <SelectField icon={Target} placeholder="Focus Area" value={formData.focusArea} onChange={(value) => handleInputChange('focusArea', value)} options={['Relationship', 'Career', 'Business', 'Health & Fitness', 'Family & Children', 'Spiritual Growth', 'Foreign Settlement', 'Life Purpose', 'Marital Status']} />
+                <SelectField icon={User} placeholder="Purpose of visit" value={formData.purposeOfVisit} onChange={(value) => handleInputChange('purposeOfVisit', value)} options={['Love', 'Marriage', 'Career', 'Health', 'Wealth', 'Peace of Mind', 'Family', 'Other']} />
               </div>
 
               <button 
                 onClick={handleSignUp}
                 disabled={loading}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-6 rounded-full text-lg transition-colors duration-200 shadow-lg mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 sm:py-4 px-4 rounded-full text-base sm:text-lg transition-colors duration-200 shadow-lg mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Creating Account...' : 'Sign up'}
               </button>
 
-              <div className="text-center mt-2">
-                <p className="text-gray-600">
-                  Already Registered? 
+              <div className="text-center mt-3">
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Already Registered?
                   <button 
                     onClick={() => window.location.href = '/login'}
                     className="text-amber-600 hover:text-amber-700 font-semibold ml-1 underline"
@@ -306,13 +238,12 @@ export default function SignUpPage() {
 
               <div className="flex items-center my-4">
                 <div className="flex-grow border-t border-gray-300"></div>
-                <span className="mx-3 text-gray-500">or</span>
+                <span className="mx-3 text-gray-500 text-sm sm:text-base">or</span>
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
 
               <div className="flex flex-col items-center mt-2">
-                <span className="text-gray-600 mb-3">Sign up with:</span>
-                
+                <span className="text-gray-600 mb-3 text-sm sm:text-base">Sign up with:</span>
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
                   onError={handleGoogleError}
@@ -321,13 +252,13 @@ export default function SignUpPage() {
                   size="large"
                   theme="outline"
                   text="signup_with"
-                  width="280"
+                  width="260"
                 />
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-  )
+    </div>
+  );
 }
