@@ -39,7 +39,7 @@ const useAIStore = create((set) => ({
 
   sendMessage : async(data) => {
     try {
-        const res = await axios.post("http://localhost:5000/api/astro/ask",data,{
+        const res = await axios.post("https://astrolozee-backend.vercel.app/api/astro/ask",data,{
             withCredentials:true,
         });
         if(res.data.success){
