@@ -1,5 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { User, Calendar, MapPin, Heart, Target, Star, ChevronDown, Mail, Lock } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
+import useAuthStore from '../../../stores/useAuthStore';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -18,11 +20,12 @@ export default function SignUpPage() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
 
-  const handleInputChange = useCallback((field, value) => {
+  const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    if (error) setError('');
-  }, [error]);
+    setError('');
+  };
 
   const handleSignUp = async () => {
     const { name, email, password, gender, dateOfBirth, timeOfBirth, currentLocation, 
@@ -63,7 +66,8 @@ export default function SignUpPage() {
 
       if (response.ok) {
         console.log('Signup successful:', data);
-        alert('Signup successful!');
+        setUser(data.user); 
+        window.location.href = '/';
       } else {
         setError(data.message || 'Signup failed');
       }
@@ -93,7 +97,13 @@ export default function SignUpPage() {
 
       if (response.ok) {
         console.log('Google signup successful:', data);
-        alert('Google signup successful!');
+        if (!data.isProfileComplete) {
+          setUser(data.user); 
+          window.location.href = '/complete-profile';
+        } else {
+          setUser(data.user); 
+          window.location.href = '/';
+        }
       } else {
         setError(data.message || 'Google signup failed');
       }
@@ -218,7 +228,7 @@ export default function SignUpPage() {
                 <p className="text-gray-600 text-sm sm:text-base">
                   Already Registered?
                   <button 
-                    onClick={() => alert('Navigate to login')}
+                    onClick={() => window.location.href = '/login'}
                     className="text-amber-600 hover:text-amber-700 font-semibold ml-1 underline"
                   >
                     Login
@@ -234,7 +244,7 @@ export default function SignUpPage() {
 
               <div className="flex flex-col items-center mt-2">
                 <span className="text-gray-600 mb-3 text-sm sm:text-base">Sign up with:</span>
-                // <GoogleLogin
+                <GoogleLogin
                   onSuccess={handleGoogleSuccess}
                   onError={handleGoogleError}
                   useOneTap={false}
@@ -252,3 +262,14 @@ export default function SignUpPage() {
     </div>
   );
 }
+
+// <GoogleLogin
+//                   onSuccess={handleGoogleSuccess}
+//                   onError={handleGoogleError}
+//                   useOneTap={false}
+//                   shape="pill"
+//                   size="large"
+//                   theme="outline"
+//                   text="signup_with"
+//                   width="260"
+//                 />
