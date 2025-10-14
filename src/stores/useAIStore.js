@@ -10,7 +10,7 @@ const useAIStore = create((set) => ({
     set({ chatsLoading: true, error: null });
 
     try {
-      const res = await axios.get("http://localhost:5000/api/astro/history", {
+      const res = await axios.get("https://astrolozee-backend.vercel.app/api/astro/history", {
         withCredentials: true,
       });
 

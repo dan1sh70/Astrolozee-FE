@@ -22,7 +22,7 @@ const useAuthStore = create((set) => ({
   // Check authentication status
   checkAuth: async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/get-user`, {
+      const response = await fetch(`https://astrolozee-backend.vercel.app/api/auth/get-user`, {
         method: 'GET',
         credentials: 'include' // Important: sends cookie
       });
@@ -58,7 +58,7 @@ const useAuthStore = create((set) => ({
   // Logout function
   logout: async () => {
     try {
-      await fetch(`http://localhost:5000/api/auth/logout`, {
+      await fetch(`https://astrolozee-backend.vercel.app/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       });
