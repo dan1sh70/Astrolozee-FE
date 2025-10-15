@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { User, Calendar, Clock, MapPin, Heart, BookOpen } from 'lucide-react';
 
 export default function CompleteProfilePage() {
@@ -16,23 +16,28 @@ export default function CompleteProfilePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setError('');
-  };
+  }, []);
 
-  const handleFocusAreaToggle = (area) => {
+  const handleFocusAreaToggle = useCallback((area) => {
     setFormData(prev => ({
       ...prev,
       focusArea: prev.focusArea.includes(area)
         ? prev.focusArea.filter(item => item !== area)
         : [...prev.focusArea, area]
     }));
-  };
+  }, []);
 
   const handleSubmit = async () => {
-    if (!formData.dateOfBirth || !formData.timeOfBirth || !formData.placeOfBirth || 
-        !formData.currentLocation || formData.focusArea.length === 0) {
+    if (
+      !formData.dateOfBirth ||
+      !formData.timeOfBirth ||
+      !formData.placeOfBirth ||
+      !formData.currentLocation ||
+      formData.focusArea.length === 0
+    ) {
       setError('Please fill all required fields');
       return;
     }
@@ -64,7 +69,7 @@ export default function CompleteProfilePage() {
     }
   };
 
-  const SelectField = ({ icon: Icon, label, value, onChange, options }) => (
+  const SelectField = React.memo(({ icon: Icon, label, value, onChange, options }) => (
     <div className="space-y-2">
       <label className="flex items-center text-gray-700 font-medium">
         <Icon className="w-4 h-4 mr-2 text-amber-600" />
@@ -80,9 +85,9 @@ export default function CompleteProfilePage() {
         ))}
       </select>
     </div>
-  );
+  ));
 
-  const InputField = ({ icon: Icon, label, type = "text", value, onChange, placeholder }) => (
+  const InputField = React.memo(({ icon: Icon, label, type = "text", value, onChange, placeholder }) => (
     <div className="space-y-2">
       <label className="flex items-center text-gray-700 font-medium">
         <Icon className="w-4 h-4 mr-2 text-amber-600" />
@@ -90,13 +95,13 @@ export default function CompleteProfilePage() {
       </label>
       <input
         type={type}
-        value={value}
+        value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="w-full bg-white/80 border border-amber-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400"
       />
     </div>
-  );
+  ));
 
   const focusAreas = [
     "relationship", "career", "business", "health & fitness",
@@ -206,6 +211,7 @@ export default function CompleteProfilePage() {
                 {focusAreas.map(area => (
                   <button
                     key={area}
+                    type="button"
                     onClick={() => handleFocusAreaToggle(area)}
                     className={`px-4 py-2 rounded-lg text-sm transition-colors ${
                       formData.focusArea.includes(area)
