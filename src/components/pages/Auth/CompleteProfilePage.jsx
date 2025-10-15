@@ -1,6 +1,41 @@
 import React, { useState, useCallback } from 'react';
 import { User, Calendar, Clock, MapPin, Heart, BookOpen } from 'lucide-react';
 
+// Move these components outside the main component to prevent recreation
+const SelectField = ({ icon: Icon, label, value, onChange, options }) => (
+  <div className="space-y-2">
+    <label className="flex items-center text-gray-700 font-medium">
+      <Icon className="w-4 h-4 mr-2 text-amber-600" />
+      {label}
+    </label>
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full bg-white/80 border border-amber-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400"
+    >
+      {options.map(opt => (
+        <option key={opt.value} value={opt.value}>{opt.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const InputField = ({ icon: Icon, label, type = "text", value, onChange, placeholder }) => (
+  <div className="space-y-2">
+    <label className="flex items-center text-gray-700 font-medium">
+      <Icon className="w-4 h-4 mr-2 text-amber-600" />
+      {label}
+    </label>
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className="w-full bg-white/80 border border-amber-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400"
+    />
+  </div>
+);
+
 export default function CompleteProfilePage() {
   const [formData, setFormData] = useState({
     gender: 'male',
@@ -21,14 +56,14 @@ export default function CompleteProfilePage() {
     setError('');
   }, []);
 
-  const handleFocusAreaToggle = useCallback((area) => {
+  const handleFocusAreaToggle = (area) => {
     setFormData(prev => ({
       ...prev,
       focusArea: prev.focusArea.includes(area)
         ? prev.focusArea.filter(item => item !== area)
         : [...prev.focusArea, area]
     }));
-  }, []);
+  };
 
   const handleSubmit = async () => {
     if (
@@ -68,40 +103,6 @@ export default function CompleteProfilePage() {
       setLoading(false);
     }
   };
-
-  const SelectField = React.memo(({ icon: Icon, label, value, onChange, options }) => (
-    <div className="space-y-2">
-      <label className="flex items-center text-gray-700 font-medium">
-        <Icon className="w-4 h-4 mr-2 text-amber-600" />
-        {label}
-      </label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-white/80 border border-amber-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400"
-      >
-        {options.map(opt => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
-        ))}
-      </select>
-    </div>
-  ));
-
-  const InputField = React.memo(({ icon: Icon, label, type = "text", value, onChange, placeholder }) => (
-    <div className="space-y-2">
-      <label className="flex items-center text-gray-700 font-medium">
-        <Icon className="w-4 h-4 mr-2 text-amber-600" />
-        {label}
-      </label>
-      <input
-        type={type}
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full bg-white/80 border border-amber-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-400"
-      />
-    </div>
-  ));
 
   const focusAreas = [
     "relationship", "career", "business", "health & fitness",
