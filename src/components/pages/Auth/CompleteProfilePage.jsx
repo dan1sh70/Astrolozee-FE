@@ -81,7 +81,7 @@ export default function CompleteProfilePage() {
     setError('');
 
     try {
-      const response = await fetch(`https://astrolozee-backend.vercel.app/api/auth/complete-profile`, {
+      const response = await fetch(`https://astrolozee-be.onrender.com/api/auth/complete-profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
