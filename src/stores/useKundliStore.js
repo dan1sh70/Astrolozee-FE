@@ -9,7 +9,7 @@ const useKundliStore = create((set) => ({
     set({ loading: true });
 
     try {
-      const res = await axios.post("https://astrolozee-backend.vercel.app/api/kundli/generate",data,
+      const res = await axios.post("https://astrolozee-be.onrender.com/api/kundli/generate",data,
         { withCredentials: true }
       );
 
