@@ -34,7 +34,7 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      const response = await fetch(`https://astrolozee-backend.vercel.app/api/auth/login`, {
+      const response = await fetch(`https://astrolozee-be.onrender.com/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -59,7 +59,7 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      const response = await fetch(`https://astrolozee-backend.vercel.app/api/auth/google`, {
+      const response = await fetch(`https://astrolozee-be.onrender.com/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
