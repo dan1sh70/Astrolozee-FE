@@ -76,7 +76,7 @@ export default function SignUpPage() {
     setError('');
 
     try {
-      const response = await fetch(`https://astrolozee-be.onrender.com/api/auth/signup`, {
+      const response = await fetch(`https://api.astrolozee.com/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -118,7 +118,7 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(`https://astrolozee-be.onrender.com/api/auth/google`, {
+      const response = await fetch(`https://api.astrolozee.com/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
