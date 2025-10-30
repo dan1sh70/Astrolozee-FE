@@ -23,7 +23,7 @@ const useAuthStore = create((set) => ({
 checkAuth: async () => {
   try {
     console.log("Starting auth check...");
-    const response = await fetch(`https://astrolozee-be.onrender.com/api/auth/get-user`, {
+    const response = await fetch(`https://api.astrolozee.com/api/auth/get-user`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -67,7 +67,7 @@ checkAuth: async () => {
   // Logout function
   logout: async () => {
     try {
-      await fetch(`https://astrolozee-be.onrender.com/api/auth/logout`, {
+      await fetch(`https://api.astrolozee.com/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       });
