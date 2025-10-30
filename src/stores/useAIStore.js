@@ -10,7 +10,7 @@ const useAIStore = create((set) => ({
     set({ chatsLoading: true, error: null });
 
     try {
-      const res = await axios.get("https://astrolozee-be.onrender.com/api/astro/history", {
+      const res = await axios.get("https://api.astrolozee.com/api/astro/history", {
         withCredentials: true,
       });
 
@@ -39,7 +39,7 @@ const useAIStore = create((set) => ({
 
   sendMessage : async(data) => {
     try {
-        const res = await axios.post("https://astrolozee-be.onrender.com/api/astro/ask",data,{
+        const res = await axios.post("https://api.astrolozee.com/api/astro/ask",data,{
             withCredentials:true,
         });
         if(res.data.success){
